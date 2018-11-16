@@ -200,3 +200,16 @@ $npm install react react-dom --save
     <div id="app"></div>
 </body>
 ```
+##### 修改app/index.js
+
+```
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+ReactDOM.render(<div>hello jspang react</div>, document.getElementById('app'))
+```
+#### 重启服务 【调试 app/index.js 查看结果】 
+
+```
+$npm run server
+```
