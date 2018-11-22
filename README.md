@@ -149,6 +149,7 @@ $npm run server
 
 ```
 $npm install babel-core babel-loader@7 babel-preset-es2015 babel-preset-react --save-dev
+$npm install style-loader css-loader --save-dev
 ```
 ##### 配置babel 【修改webpack.config.js】
 
@@ -179,6 +180,9 @@ module.exports={
             query:{
                 presets:['es2015','react']
             }
+        },{
+            test:/\.css$/,
+            loaders:['style-loader', 'css-loader']
         }]
     }
 }
@@ -212,4 +216,148 @@ ReactDOM.render(<div>hello jspang react</div>, document.getElementById('app'))
 
 ```
 $npm run server
+```
+### 四、安装路由
+
+```
+$npm install react-router react-router-dom --save
+```
+##### BrowserRouter  NavLink
+##### 类继承
+###### nav.js
+```
+import React from 'react';
+import {NavLink} from 'react-router-dom'
+
+const NavBar = () => (
+    <div>
+        <div>
+            <NavLink exact to="/">Jspang-a</NavLink> |&nbsp;
+            <NavLink to="/Jspangb">Jspang-b</NavLink> |&nbsp;
+            <NavLink to="/Jspangc">Jspang-c</NavLink>
+        </div>
+    </div>
+)
+
+export default NavBar;
+```
+###### index.js
+```
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {BrowserRouter as Router, Route} from 'react-router-dom'
+import Nav from './nav'
+import Jspang from './jspang';
+import Jspangb from './jspangb';
+import Jspangc from './jspangc';
+
+
+// ReactDOM.render(<Jspang/>, document.getElementById('app'))
+
+ReactDOM.render(
+    <Router>
+        <div>
+            <Nav/>
+            <Route  exact path="/" component={Jspang}/>
+            <Route  path="/Jspangb" component={Jspangb}/>
+            <Route  path="/Jspangc" component={Jspangc}/>
+        </div>
+    </Router>
+    , document.getElementById('app'))
+```
+##### css样式
+###### nav.js
+```
+import React from 'react';
+import {NavLink} from 'react-router-dom'
+import './nav.css'
+
+const NavBar = () => (
+    <div>
+        <div>
+            <NavLink exact className="blue" to="/">Jspang-a</NavLink> |&nbsp;
+            <NavLink activeClassName="activeNar" style={{color: 'green',fontSize: '33px'}} to="/Jspangb">Jspang-b</NavLink> |&nbsp;
+            <NavLink activeClassName="activeNar" to="/Jspangc">Jspang-c</NavLink>
+        </div>
+    </div>
+)
+
+export default NavBar;
+```
+##### Switch 匹配404页面
+###### nav.js
+```
+import React from 'react';
+import {NavLink} from 'react-router-dom'
+import './nav.css'
+
+const NavBar = () => (
+    <div>
+        <div>
+            <NavLink exact className="blue" to="/">Jspang-a</NavLink> |&nbsp;
+            <NavLink activeClassName="activeNar" style={{color: 'green',fontSize: '33px'}} to="/Jspangb">Jspang-b</NavLink> |&nbsp;
+            <NavLink activeClassName="activeNar" to="/Jspangc">Jspang-c</NavLink>|&nbsp;
+            <NavLink activeClassName="activeNar" to="/Jspangd">404Page</NavLink>|&nbsp;
+            <NavLink activeClassName="activeNar" to="/redirect">Redirect</NavLink>
+        </div>
+    </div>
+)
+
+export default NavBar;
+```
+###### index.js
+```
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {BrowserRouter as Router, Route,Switch} from 'react-router-dom'
+import Nav from './nav'
+import Jspang from './jspang';
+import Jspangb from './jspangb';
+import Jspangc from './jspangc';
+import Error from './404';
+
+// ReactDOM.render(<Jspang/>, document.getElementById('app'))
+
+ReactDOM.render(
+    <Router>
+        <div>
+            <Nav/>
+            <Switch>
+                <Route  exact path="/" component={Jspang}/>
+                <Route  path="/Jspangb" component={Jspangb}/>
+                <Route  path="/Jspangc" component={Jspangc}/>
+                <Route  component={Error}/>
+            </Switch>
+        </div>
+    </Router>
+    , document.getElementById('app'))
+```
+##### Redirect 重定向
+###### index.js
+```
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {BrowserRouter as Router, Route,Switch,Redirect} from 'react-router-dom'
+import Nav from './nav'
+import Jspang from './jspang';
+import Jspangb from './jspangb';
+import Jspangc from './jspangc';
+import Error from './404';
+
+// ReactDOM.render(<Jspang/>, document.getElementById('app'))
+
+ReactDOM.render(
+    <Router>
+        <div>
+            <Nav/>
+            <Switch>
+                <Route  exact path="/" component={Jspang}/>
+                <Route  path="/Jspangb" component={Jspangb}/>
+                <Route  path="/Jspangc" component={Jspangc}/>
+                <Redirect from="/redirect" to="/Jspangc" />
+                <Route  component={Error}/>
+            </Switch>
+        </div>
+    </Router>
+    , document.getElementById('app'))
 ```

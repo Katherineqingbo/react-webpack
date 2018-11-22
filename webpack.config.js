@@ -13,7 +13,7 @@ module.exports={
         contentBase: './',
         host: 'localhost',
         compress: true, // 压缩
-        port: 6789
+        port: 6777
     },
     // 配置babel
     module:{
@@ -24,6 +24,9 @@ module.exports={
             query:{
                 presets:['es2015','react']
             }
+        },{
+            test:/\.css$/,
+            loaders:['style-loader', 'css-loader']
         }]
     }
 }
