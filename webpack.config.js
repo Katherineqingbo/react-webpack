@@ -5,7 +5,7 @@ module.exports={
     // 出口文件
     output:{
         filename: 'index.js',
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'dist'), // __dirname是node.js中的一个全局变量，它指向当前执行脚本所在的目录
         publicPath: 'temp/'   // 配置公共路径直接指向内存文件temp
     },
     // 配置服务

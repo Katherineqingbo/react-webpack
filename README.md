@@ -361,3 +361,130 @@ ReactDOM.render(
     </Router>
     , document.getElementById('app'))
 ```
+#### React传值
+###### nav.js
+```
+<div>
+    <NavLink exact className="blue" to="/">Jspang-a</NavLink> |&nbsp;
+    <NavLink activeClassName="activeNar" style={{color: 'green',fontSize: '33px'}} to="/Jspangb">Jspang-b</NavLink> |&nbsp;
+    <NavLink activeClassName="activeNar" to="/Jspangc/ILoveWeb/Jspang">Jspang-c</NavLink>|&nbsp;
+    <NavLink activeClassName="activeNar" to="/Jspangd">404Page</NavLink>|&nbsp;
+    <NavLink activeClassName="activeNar" to="/redirect">Redirect</NavLink>
+</div>
+```
+###### index.js
+```
+<div>
+    <Nav/>
+    <Switch>
+        <Route  exact path="/" component={Jspang}/>
+        <Route  path="/Jspangb" component={Jspangb}/>
+        <Route  path="/Jspangc/:param/:aaa" component={Jspangc}/>
+        <Redirect from="/redirect" to="/Jspangc" />
+        <Route  component={Error}/>
+    </Switch>
+</div>
+```
+###### jspangc.js
+```
+import React from 'react';
+// 类继承
+export default class jspang extends React.Component{
+    componentWillMount(){
+        console.log(this.props)
+        console.log(this.props.match.params.param)
+        console.log('-------'+this.props.match.params.aaa)
+    }
+    render(){
+        return(
+            <div>C默认页面
+                <p>{this.props.match.params.param }</p>
+                <p>{this.props.match.params.aaa}</p>
+            </div>
+        )
+    } 
+}
+```
+#### basename forceRefresh HashRouter
+
+```
+basename 增加层级划分功能模块
+forceRefresh 关闭路由功能
+```
+###### index.js
+```
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {BrowserRouter as Router,HashRouter,MemoryRouter, Route,Switch,Redirect} from 'react-router-dom'
+import Nav from './nav'
+import Jspang from './jspang';
+import Jspangb from './jspangb';
+import Jspangc from './jspangc';
+import Error from './404';
+
+// ReactDOM.render(<Jspang/>, document.getElementById('app'))
+
+ReactDOM.render(
+    <HashRouter basename="demo" forceRefresh={false}>
+        <div>
+            <Nav/>
+            <Switch>
+                <Route  exact path="/" component={Jspang}/>
+                <Route  path="/Jspangb" component={Jspangb}/>
+                <Route  path="/Jspangc/:param/:aaa" component={Jspangc}/>
+                <Redirect from="/redirect" to="/Jspangc" />
+                <Route  component={Error}/>
+            </Switch>
+        </div>
+    </HashRouter>
+    , document.getElementById('app'))
+```
+
+#### 五种路由模式
+
+```
+
+BrowserRouter： 浏览器的路由方式，也是我们一直在学习的路由方式，在开发中最常使用。
+HashRouter：    在路径前加入#号成为一个哈希值。Hash模式的好处是，再也不会因为我们刷新而找不到我们的对应路径了。
+MemoryRouter：  不存储history，所有路由过程保存在内存里，不能进行前进后退，因为地址栏没有发生任何变化。
+NativeRouter：  经常配合ReactNative使用，多用于移动端，以后ReactNative课程中会详细讲解。
+StaticRouter：  设置静态路由，需要和后台服务器配合设置，比如设置服务端渲染时使用。
+```
+#### prompt
+
+```
+提示信息
+MemoryRouter路由模式下不起作用
+```
+###### jspangb.js
+
+```
+import React from 'react';
+import { Prompt } from 'react-router-dom';
+// 类继承
+export default class jspang extends React.Component{
+    constructor (props) {
+        super(props)
+        this.state={
+            status: false
+        }
+        this.handleChange = this.handleChange.bind(this)
+    }
+
+    handleChange(){
+        this.setState({
+            status:true
+        })
+    }
+
+    render(){
+        return(
+            <div>
+                <Prompt message="是否残忍离开" when={this.state.status}/>
+                <p>B默认页面</p>
+                <button onClick={this.handleChange}>启用</button>
+            </div>
+        )
+    } 
+}
+```
